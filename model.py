@@ -67,10 +67,10 @@ class Model(object):
         y = self.queries[:, 1:]  # predict y from x
 
         self.char_embeddings = tf.get_variable(
-            'char_embeddings', [params.vocab_size, params.char_embed_size])
-        self.char_bias = tf.get_variable('char_bias', [params.vocab_size])
+            'char_embeddings', [params.vocab_size, params.char_embed_size], dtype=tf.float16)
+        self.char_bias = tf.get_variable('char_bias', [params.vocab_size], dtype=tf.float16)
         self.user_embed_mat = tf.get_variable(
-            'user_embed_mat', [params.user_vocab_size, params.user_embed_size])
+            'user_embed_mat', [params.user_vocab_size, params.user_embed_size], dtype=tf.float16)
 
         inputs = tf.nn.embedding_lookup(self.char_embeddings, x)
 
@@ -107,10 +107,10 @@ class Model(object):
                                            sequence_length=self.query_lengths,
                                            dtype=tf.float32)
             reshaped_outputs = tf.reshape(outputs, [-1, params.num_units])
-            projected_outputs = tf.layers.dense(reshaped_outputs, params.char_embed_size,
-                                                name='proj')
-            reshaped_logits = tf.matmul(projected_outputs, self.char_embeddings,
-                                        transpose_b=True) + self.char_bias
+            projected_outputs = tf.layers.dense(reshaped_outputs, params.char_embed_size, name='proj')
+
+            # nan here?
+            reshaped_logits = tf.matmul(projected_outputs, self.char_embeddings, transpose_b=True) + self.char_bias
 
         reshaped_labels = tf.reshape(y, [-1])
         reshaped_mask = tf.reshape(_mask, [-1])
