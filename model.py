@@ -67,10 +67,10 @@ class Model(object):
         y = self.queries[:, 1:]  # predict y from x
 
         self.char_embeddings = tf.get_variable(
-            'char_embeddings', [params.vocab_size, params.char_embed_size], dtype=tf.float16)
-        self.char_bias = tf.get_variable('char_bias', [params.vocab_size], dtype=tf.float16)
+            'char_embeddings', [params.vocab_size, params.char_embed_size], dtype=tf.float32)
+        self.char_bias = tf.get_variable('char_bias', [params.vocab_size], dtype=tf.float32)
         self.user_embed_mat = tf.get_variable(
-            'user_embed_mat', [params.user_vocab_size, params.user_embed_size], dtype=tf.float16)
+            'user_embed_mat', [params.user_vocab_size, params.user_embed_size], dtype=tf.float32)
 
         inputs = tf.nn.embedding_lookup(self.char_embeddings, x)
 
