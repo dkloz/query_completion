@@ -120,6 +120,8 @@ class Model(object):
 
         masked_loss = tf.multiply(reshaped_loss, reshaped_mask)
         self.masked_loss = masked_loss
+        self.reshaped_logits = reshaped_logits
+        self.reshaped_labels = reshaped_labels
 
         self.per_word_loss = tf.reshape(masked_loss, tf.shape(x))
         self.per_sentence_loss = tf.div(tf.reduce_sum(self.per_word_loss, 1),
