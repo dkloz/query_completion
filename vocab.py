@@ -22,7 +22,7 @@ class Vocab(object):
             if idx > 0:
                 all_tokens[0], all_tokens[idx] = '<UNK>', all_tokens[0]
         self.word_to_idx = dict(zip(all_tokens, range(1, self.vocab_size + 1)))
-        self.idx_to_word = invert_dict(self.idx_to_word)
+        self.idx_to_word = invert_dict(self.word_to_idx)
         # dict(zip(self.word_to_idx.values(),
         #                             self.word_to_idx.keys()))
 
