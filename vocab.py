@@ -12,7 +12,7 @@ def invert_dict(d):
 class Vocab(object):
 
     def __init__(self, tokenset, unk_symbol='<UNK>', token_counts=None):
-        self.vocab_size = len(tokenset)
+        self.vocab_size = len(tokenset) + 1
         self.unk_symbol = unk_symbol
 
         # make <UNK> be in the zero spot
