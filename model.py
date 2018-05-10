@@ -110,7 +110,8 @@ class Model(object):
             projected_outputs = tf.layers.dense(reshaped_outputs, params.char_embed_size, name='proj')
 
             # nan here?
-            reshaped_logits = tf.matmul(projected_outputs, self.char_embeddings, transpose_b=True) + self.char_bias
+            reshaped_logits = tf.matmul(projected_outputs, self.char_embeddings,
+                                        transpose_b=True) + self.char_bias + 1e-10  # add tiny thing here to avoid nan?
 
         reshaped_labels = tf.reshape(y, [-1])
         reshaped_mask = tf.reshape(_mask, [-1])
