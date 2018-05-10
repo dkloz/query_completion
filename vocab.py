@@ -28,7 +28,7 @@ class Vocab(object):
 
         if token_counts:
             self.token_counts = [token_counts[self.idx_to_word[i]] for i in
-                                 range(self.vocab_size)]
+                                 range(1, self.vocab_size + 1)]
         else:
             self.token_counts = None
 
@@ -95,7 +95,7 @@ class Vocab(object):
         return self.LookupIdx(key)
 
     def __iter__(self):
-        word_list = [self.idx_to_word[x] for x in xrange(self.vocab_size)]
+        word_list = [self.idx_to_word[x] for x in xrange(1, self.vocab_size + 1)]
         return word_list.__iter__()
 
     def __len__(self):
@@ -107,7 +107,7 @@ class Vocab(object):
                 pickle.dump(self, f)
         elif filename.endswith('.txt'):
             with open(filename, 'w') as f:
-                for i in range(self.vocab_size):
+                for i in range(1, self.vocab_size + 1):
                     f.write('{0}\n'.format(self.idx_to_word[i]))
         else:
             print 'ERROR: bad file extension'
