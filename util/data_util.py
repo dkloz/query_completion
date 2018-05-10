@@ -115,7 +115,6 @@ def split_train_val_context(train_percent, sentences, context=None, end_token=22
     return x_train, y_train, x_val, y_val
 
 
-
 def sample_data(x_matrices, y, size=10000, replace=False, seed=1234):
     """Methods that returns a random sample from data.
 
