@@ -26,6 +26,8 @@ def LoadData(filenames, split=True):
         df['hourofday'] = [d.hour for d in dates]
         df['dayofweek'] = [d.dayofweek for d in dates]
         df['length'] = [len(x) for x in df['query_']]
+
+        
         df = df.drop(['a', 'b'], axis=1)
         dfs.append(df)
     return pandas.concat(dfs)
