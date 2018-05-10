@@ -89,6 +89,7 @@ def split_train_val_context(train_percent, sentences, context=None, end_token=22
         train_percent: float: How much data should be in training (rest are in validation).
         sentences: Data (array of Nx max_sent_length)
         context: Array of context. 1D that is converted
+        end_token: id of the ending sentence token.
     Returns:
         train data (list of sentences, context), train labels, val data, val labels.
     """

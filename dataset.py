@@ -22,9 +22,9 @@ def LoadData(filenames, split=True):
             df['query_'] = df.query_.apply(Prepare)
         df['user'] = df.user.apply(lambda x: 's' + str(x))
 
-        dates = df.date.apply(lambda x: datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
-        df['hourofday'] = [d.hour for d in dates]
-        df['dayofweek'] = [d.dayofweek for d in dates]
+        # dates = df.date.apply(lambda x: datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
+        # df['hourofday'] = [d.hour for d in dates]
+        # df['dayofweek'] = [d.dayofweek for d in dates]
         df['length'] = [len(x) for x in df['query_']]
         df = df.drop(['a', 'b'], axis=1)
         dfs.append(df)
