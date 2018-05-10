@@ -77,7 +77,7 @@ class Vocab(object):
 
     def GetWords(self):
         """Get a list of words in the vocabulary."""
-        return [self.idx_to_word[i] for i in xrange(len(self.word_to_idx))]
+        return [self.idx_to_word[i] for i in xrange(1, len(self.word_to_idx) + 1)]
 
     def LookupIdx(self, token):
         if token in self.word_to_idx:
