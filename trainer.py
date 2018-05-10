@@ -13,7 +13,6 @@ from model import Model
 from metrics import MovingAvg
 from vocab import Vocab
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument('expdir', help='experiment directory')
 parser.add_argument('--params', type=str, default='default_params.json',
@@ -28,21 +27,18 @@ args = parser.parse_args()
 
 expdir = args.expdir
 if not os.path.exists(expdir):
-  os.mkdir(expdir)
+    os.mkdir(expdir)
 else:
-  print 'ERROR: expdir already exists'
-  exit(-1)
-
+    print 'ERROR: expdir already exists'
+    exit(-1)
 
 tf.set_random_seed(int(time.time() * 1000))
 
 params = helper.GetParams(args.params, 'train', args.expdir)
 
-
 logging.basicConfig(filename=os.path.join(expdir, 'logfile.txt'),
                     level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler())
-
 
 df = LoadData(args.data)
 char_vocab = Vocab.MakeFromData(df.query_, min_count=10)
@@ -65,19 +61,18 @@ config = tf.ConfigProto(inter_op_parallelism_threads=args.threads,
 session = tf.Session(config=config)
 session.run(tf.global_variables_initializer())
 
-
 avg_loss = MovingAvg(0.97)  # exponential moving average of the training loss
 for idx in range(params.iters):
-  feed_dict = dataset.GetFeedDict(model)
-  feed_dict[model.dropout_keep_prob] = params.dropout
+    feed_dict = dataset.GetFeedDict(model)
+    feed_dict[model.dropout_keep_prob] = params.dropout
 
-  c, _ = session.run([model.avg_loss, model.train_op], feed_dict)
-  cc = avg_loss.Update(c)
-  if idx % 50 == 0 and idx > 0:
-    # test one batch from the validation set
-    val_c = session.run(model.avg_loss, valdata.GetFeedDict(model))
-    logging.info({'iter': idx, 'cost': cc, 'rawcost': c, 
-                  'valcost': val_c})
-  if idx % 2000 == 0:  # save a model file every 2,000 minibatches
-    saver.save(session, os.path.join(expdir, 'model.bin'),
-               write_meta_graph=False)
+    c, _ = session.run([model.avg_loss, model.train_op], feed_dict)
+    cc = avg_loss.Update(c)
+    if idx % 50 == 0 and idx > 0:
+        # test one batch from the validation set
+        val_c = session.run(model.avg_loss, valdata.GetFeedDict(model))
+        logging.info({'iter': idx, 'cost': cc, 'rawcost': c,
+                      'valcost': val_c})
+    if idx % 2000 == 0:  # save a model file every 2,000 minibatches
+        saver.save(session, os.path.join(expdir, 'model.bin'),
+                   write_meta_graph=False)

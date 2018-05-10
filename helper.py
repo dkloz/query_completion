@@ -6,29 +6,29 @@ import numpy as np
 
 
 def GetPrefixLen(user, query, n=None):
-  # choose a random prefix length
-  hasher = hashlib.md5()
-  hasher.update(user)
-  hasher.update(''.join(query))
-  if n:
-    hasher.update(str(n))
-  prefix_len = int(hasher.hexdigest(), 16) % (len(query) - 1)
-  prefix_len += 1  # always have at least a single character prefix
-  return prefix_len
+    # choose a random prefix length
+    hasher = hashlib.md5()
+    hasher.update(user)
+    hasher.update(''.join(query))
+    if n:
+        hasher.update(str(n))
+    prefix_len = int(hasher.hexdigest(), 16) % (len(query) - 1)
+    prefix_len += 1  # always have at least a single character prefix
+    return prefix_len
 
 
 def GetParams(filename, mode, expdir):
-  param_filename = os.path.join(expdir, 'params.json')
-  if mode == 'train':
-    with open(filename, 'r') as f:
-      param_dict = json.load(f)
-      params = bunch.Bunch(param_dict)
-    with open(param_filename, 'w') as f:
-      json.dump(param_dict, f)
-  else:
-    with open(param_filename, 'r') as f:
-      params = bunch.Bunch(json.load(f))
-  return params
+    param_filename = os.path.join(expdir, 'params.json')
+    if mode == 'train':
+        with open(filename, 'r') as f:
+            param_dict = json.load(f)
+            params = bunch.Bunch(param_dict)
+        with open(param_filename, 'w') as f:
+            json.dump(param_dict, f)
+    else:
+        with open(param_filename, 'r') as f:
+            params = bunch.Bunch(json.load(f))
+    return params
 
 
 def levenshtein(source, target, cutoff=None):
@@ -56,17 +56,17 @@ def levenshtein(source, target, cutoff=None):
         # Target and source items are aligned, and either
         # are different (cost of 1), or are the same (cost of 0).
         current_row[1:] = np.minimum(
-                current_row[1:],
-                np.add(previous_row[:-1], target != s))
+            current_row[1:],
+            np.add(previous_row[:-1], target != s))
 
         # Deletion (target grows shorter than source):
         current_row[1:] = np.minimum(
-                current_row[1:],
-                current_row[0:-1] + 1)
+            current_row[1:],
+            current_row[0:-1] + 1)
 
         previous_row = current_row
 
         if cutoff is not None and previous_row.min() > cutoff:
-          return cutoff
+            return cutoff
 
     return previous_row[-1]
