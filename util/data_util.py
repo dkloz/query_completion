@@ -189,7 +189,7 @@ def make_word_embedding_matrix_file(vocab, dataset_name='9sr'):
         if glove_emb.get(w) is not None:
             word_emb_array[i] = np.array(glove_emb.get(w))
 
-    filename = os.path.join(word_embeddings_dir, '%s_glove_matrix_300d.pkl' % dataset_name)
+        filename = os.path.join(word_embeddings_dir, 'query_completion', '%s_glove_matrix_300d.pkl' % dataset_name)
     save_pickle(filename, word_emb_array)
 
     return word_emb_array, glove_emb
