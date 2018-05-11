@@ -88,7 +88,7 @@ def myLoadData(filenames, split=True):
         df = pandas.read_csv(filename, sep='\t', header=None)
         df.columns = ['user', 'sentence']
         if split:
-            df['sentence'] = df.query_.apply(Prepare)
+            df['sentence'] = df.sentence.apply(Prepare)
         df['user'] = df.user.apply(lambda x: 's' + str(x))
 
         dfs.append(df)
@@ -105,7 +105,7 @@ class MyDataset(object):
         self.batch_size = batch_size
         self.current_idx = 0
 
-        self.df['lengths'] = self.df.query_.apply(
+        self.df['lengths'] = self.df.sentence.apply(
             lambda x: min(self.max_len, len(x)))
 
     def GetFeedDict(self, model):
