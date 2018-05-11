@@ -85,7 +85,7 @@ def myLoadData(filenames, split=True):
     dfs = []
     for filename in filenames:
         print filename
-        df = pandas.read_csv(filename, sep='\t', compression='gzip', header=None)
+        df = pandas.read_csv(filename, sep='\t', header=None)
         df.columns = ['user', 'sentence']
         if split:
             df['sentence'] = df.query_.apply(Prepare)
