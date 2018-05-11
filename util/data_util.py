@@ -140,16 +140,21 @@ def sample_data(x_matrices, y, size=10000, replace=False, seed=1234):
     return x_sample, y_sample
 
 
-def load_word_embeddings_from_file(name='glove', size=300):
+def load_word_embeddings_from_file(name='glove', size=300, vocab=None):
     """Loads the file from glove that contains word embedding vectors. File should exists!"""
     filename = '%s.840B.%dd.txt' % (name, size)
     filename = os.path.join(word_embeddings_dir, filename)
     print filename
     emb_dict = {}
+
     with open(filename, 'r') as f:
         for line in f:
             tokens = line.split()
             word = tokens[0]
+            if vocab is not None:
+                if vocab.get(word, -1) == -1:
+                    continue
+
             emb = [float(t) for t in tokens[1:]]
             emb_dict[word] = emb
     return emb_dict
@@ -170,11 +175,11 @@ def make_word_embedding_matrix_file(vocab, dataset_name='9sr'):
     Saves the word embedding matrix in the word_embeddings_dir with appropriate name.
 
     Args:
-        vocab: vocabulary for that dataset.
+        vocab: vocabulary for that dataset. word -> id
         dataset_name: String that defines the dataset name and location of vocab.
     """
     np.random.seed(12345)  # random but reproducable
-    glove_emb = load_word_embeddings_from_file()
+    glove_emb = load_word_embeddings_from_file(vocab=vocab)
 
     print_intersection(vocab, glove_emb)
 

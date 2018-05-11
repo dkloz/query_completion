@@ -1,6 +1,8 @@
 from util.io import load_array, load_pickle
 import os
 
+from util.filenames import word_embeddings_dir
+
 
 def load_train(dataset='12m'):
     filename = '/home/dkotzias/query_completion/data/my-aol-data/%s/train.pkl' % dataset
@@ -26,6 +28,3 @@ def get_word_embeddings(dataset='9sr'):
         return load_pickle(filename, False)
     else:
         print ' I do not have word embeddings for %s. Making it now... Takes a few minutes.' % dataset
-
-
-
