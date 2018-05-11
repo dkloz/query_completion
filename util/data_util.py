@@ -183,7 +183,8 @@ def make_word_embedding_matrix_file(vocab, dataset_name='9sr'):
 
     print_intersection(vocab, glove_emb)
 
-    word_emb_array = np.random.random((len(vocab) + 1, 300))
+    # word_emb_array = np.random.random((len(vocab) + 1, 300)) # +1 is only for my code
+    word_emb_array = np.random.random((len(vocab), 300))
     for w, i in vocab.items():
         if glove_emb.get(w) is not None:
             word_emb_array[i] = np.array(glove_emb.get(w))
