@@ -66,8 +66,14 @@ class Model(object):
         x = self.queries[:, :-1]
         y = self.queries[:, 1:]  # predict y from x
 
-        self.char_embeddings = tf.get_variable(
-            'char_embeddings', [params.vocab_size, params.char_embed_size], dtype=tf.float32)
+        self.char_embeddings = tf.get_variable('char_embeddings', [params.vocab_size, params.char_embed_size],
+                                               dtype=tf.float32)
+
+        # Initialize embeddings (my code)
+        self.emb_placeholder = tf.placeholder(tf.float32, [params.vocab_size, params.char_embed_size])
+        self.emb_init = self.char_embeddings.assign(self.emb_placeholder)
+        # end init embeddings
+
         self.char_bias = tf.get_variable('char_bias', [params.vocab_size], dtype=tf.float32)
         self.user_embed_mat = tf.get_variable(
             'user_embed_mat', [params.user_vocab_size, params.user_embed_size], dtype=tf.float32)

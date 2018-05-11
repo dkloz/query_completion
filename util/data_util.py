@@ -1,6 +1,7 @@
 import numpy as np
 import os
 from util.io import save_pickle
+from util.filenames import word_embeddings_dir
 
 
 def x_to_y(x, end_token=2230):
@@ -137,3 +138,52 @@ def sample_data(x_matrices, y, size=10000, replace=False, seed=1234):
 
     y_sample = y[mask]
     return x_sample, y_sample
+
+
+def load_word_embeddings_from_file(name='glove', size=300):
+    """Loads the file from glove that contains word embedding vectors. File should exists!"""
+    filename = '%s.840B.%dd.txt' % (name, size)
+    filename = os.path.join(word_embeddings_dir, filename)
+    print filename
+    emb_dict = {}
+    with open(filename, 'r') as f:
+        for line in f:
+            tokens = line.split()
+            word = tokens[0]
+            emb = [float(t) for t in tokens[1:]]
+            emb_dict[word] = emb
+    return emb_dict
+
+
+def print_intersection(vocab, glove_emb):
+    """Prints intersection between two dictionaries (their keys)."""
+    v_keys = set(vocab.keys())
+    g_keys = set(glove_emb.keys())
+    intersection = v_keys.intersection(g_keys)
+    inter_percent = (1. * len(intersection)) / len(vocab)
+    print 'Total words intersected %d which is %.2f of the vocab' % (len(intersection), inter_percent)
+
+
+def make_word_embedding_matrix_file(vocab, dataset_name='9sr'):
+    """Makes a word embedding matrix file, ready to be loaded as the weights of an embedding layer in a NN.
+    Reads the vocabulary of a dataset as returned by get_vocab. (This must exist).
+    Saves the word embedding matrix in the word_embeddings_dir with appropriate name.
+
+    Args:
+        vocab: vocabulary for that dataset.
+        dataset_name: String that defines the dataset name and location of vocab.
+    """
+    np.random.seed(12345)  # random but reproducable
+    glove_emb = load_word_embeddings_from_file()
+
+    print_intersection(vocab, glove_emb)
+
+    word_emb_array = np.random.random((len(vocab) + 1, 300))
+    for w, i in vocab.items():
+        if glove_emb.get(w) is not None:
+            word_emb_array[i] = np.array(glove_emb.get(w))
+
+    filename = os.path.join(word_embeddings_dir, '%s_glove_matrix_300d.pkl' % dataset_name)
+    save_pickle(filename, word_emb_array)
+
+    return word_emb_array, glove_emb
