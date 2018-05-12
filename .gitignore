@@ -6,3 +6,5 @@ settings/
 # Jupyter Notebook
 .ipynb_checkpoints
 
+
+.idea/query_completion.iml
