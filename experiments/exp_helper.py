@@ -96,6 +96,7 @@ def get_emb_matrix(word_vocab, dataset_name):
 
     print emb_matrix.shape
     assert emb_matrix.shape[0] == len(word_vocab)
+    return emb_matrix
 
 
 def get_save_params(dataset_name, context, word_vocab, category_vocab, context_emb_size):
