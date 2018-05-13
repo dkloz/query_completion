@@ -73,14 +73,14 @@ def get_data(dataset_name, context):
     return train_df, val_df, test_df
 
 
-def make_vocabs(train_df, val_df):
+def make_vocabs(train_df, val_df, exp_dir):
     # Make vocabs
     word_vocab = Vocab.MakeFromData(train_df.sentence.tolist() + val_df.sentence.tolist(), min_count=1,
                                     no_special_syms=False)
-    word_vocab.Save(os.path.join(expdir, 'char_vocab.pickle'))
+    word_vocab.Save(os.path.join(exp_dir, 'char_vocab.pickle'))
 
     category_vocab = Vocab.MakeFromData([[u] for u in train_df.user], min_count=1, no_special_syms=False)
-    category_vocab.Save(os.path.join(expdir, 'user_vocab.pickle'))
+    category_vocab.Save(os.path.join(exp_dir, 'user_vocab.pickle'))
 
     return word_vocab, category_vocab
 
@@ -128,9 +128,10 @@ def get_save_params(dataset_name, context, word_vocab, category_vocab, context_e
 
 def make_data_train_model(dataset_name, context):
     context_emb_size = get_emb_size(dataset_name, context)
+    exp_dir = os.path.join(expdir, dataset_name, context)
 
     train_df, val_df, test_df = get_data(dataset_name, context)
-    word_vocab, category_vocab = make_vocabs(train_df, val_df)
+    word_vocab, category_vocab = make_vocabs(train_df, val_df, exp_dir)
 
     dataset = MyDataset(train_df, word_vocab, category_vocab, max_len=max_len, batch_size=batch_size)
     valdata = MyDataset(val_df, word_vocab, category_vocab, max_len=max_len, batch_size=batch_size)
