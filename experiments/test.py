@@ -23,6 +23,7 @@ def test_model(dataset_name, context, testdata):
 
         total_word_count += words_in_batch
         total_log_prob += float(c * words_in_batch)
+        print '{0}\t{1:.3f}'.format(idx, np.exp(total_log_prob / total_word_count))
 
     idx = len(testdata.df) / testdata.batch_size
     print '{0}\t{1:.3f}'.format(idx, np.exp(total_log_prob / total_word_count))
