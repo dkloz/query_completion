@@ -14,7 +14,7 @@ from helper import GetParams
 max_len = 36
 batch_size = 150
 num_units = 1024
-iterations = 20000
+iterations = 10000
 word_embed_size = 300
 
 
