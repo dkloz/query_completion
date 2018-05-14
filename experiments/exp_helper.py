@@ -14,7 +14,6 @@ from helper import GetParams
 max_len = 36
 batch_size = 150
 num_units = 1024
-iterations = 10000
 word_embed_size = 300
 
 
@@ -99,7 +98,7 @@ def get_emb_matrix(word_vocab, dataset_name):
     return emb_matrix
 
 
-def get_save_params(dataset_name, context, word_vocab, category_vocab, context_emb_size):
+def get_save_params(dataset_name, context, word_vocab, category_vocab, context_emb_size, iterations=10000):
     user_embed_size = context_emb_size
 
     rank = context_emb_size  # set the rank the same size as context. May get better results if not, but for saving tim
@@ -126,7 +125,8 @@ def get_save_params(dataset_name, context, word_vocab, category_vocab, context_e
     return params
 
 
-def make_data_train_model(dataset_name, context):
+def make_data_train_model(dataset_name, context, iterations=10000):
+    print 'Dataset: %s  Context: %s' % (dataset_name, context)
     context_emb_size = get_emb_size(dataset_name, context)
     exp_dir = os.path.join(expdir, dataset_name, context)
 
@@ -138,7 +138,7 @@ def make_data_train_model(dataset_name, context):
     testdata = MyDataset(test_df, word_vocab, category_vocab, max_len=max_len, batch_size=batch_size)
 
     emb_matrix = get_emb_matrix(word_vocab, dataset_name)
-    params = get_save_params(dataset_name, context, word_vocab, category_vocab, context_emb_size)
+    params = get_save_params(dataset_name, context, word_vocab, category_vocab, context_emb_size, iterations)
 
     save_name = os.path.join(expdir, dataset_name, context, 'model.bin')
     train_model(dataset, valdata, params, save_name, emb_matrix)
