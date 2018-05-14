@@ -4,6 +4,10 @@ import sys
 from experiments.exp_helper import make_data_train_model
 from experiments.exp_helper import read_gpu_lr
 from experiments.test import test_model
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 gpu, _ = read_gpu_lr(False)
 os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu)
