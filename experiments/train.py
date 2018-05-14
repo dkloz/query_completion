@@ -18,7 +18,7 @@ def train_model(dataset, valdata, params, save_name, emb_matrix):
     session.run(model.emb_init, feed_dict={model.emb_placeholder: emb_matrix})  # init word embeddings
 
     avg_loss = MovingAvg(0.97)  # exponential moving average of the training loss
-    total_iterations = max(params.iters, len(dataset)/params.batch_size)
+    total_iterations = max(params.iters, len(dataset.df)/params.batch_size)
     print 'Doing %d total iterations' % total_iterations
     for idx in range(total_iterations):
         feed_dict = dataset.GetFeedDict(model)
