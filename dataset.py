@@ -101,6 +101,7 @@ class MyDataset(object):
         self.max_len = max_len
         self.char_vocab = char_vocab
         self.user_vocab = user_vocab
+        self.df = df
         if sample:
             self.df = df.sample(frac=1)
         self.batch_size = batch_size
