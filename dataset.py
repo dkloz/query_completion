@@ -79,7 +79,7 @@ def myLoadData(filenames, split=True):
     Input files should have three columns for userid, query, and date.
     """
 
-    def Prepare(s):
+    def myPrepare(s):
         return s.split(' ')
 
     dfs = []
@@ -88,7 +88,7 @@ def myLoadData(filenames, split=True):
         df = pandas.read_csv(filename, sep='\t', header=None)
         df.columns = ['user', 'sentence']
         if split:
-            df['sentence'] = df.sentence.apply(Prepare)
+            df['sentence'] = df.sentence.apply(myPrepare)
         df['user'] = df.user.apply(lambda x: 's' + str(x))
 
         dfs.append(df)
@@ -97,11 +97,12 @@ def myLoadData(filenames, split=True):
 
 class MyDataset(object):
 
-    def __init__(self, df, char_vocab, user_vocab, batch_size=24, max_len=60):
+    def __init__(self, df, char_vocab, user_vocab, batch_size=24, max_len=60, sample=True):
         self.max_len = max_len
         self.char_vocab = char_vocab
         self.user_vocab = user_vocab
-        self.df = df.sample(frac=1)
+        if sample:
+            self.df = df.sample(frac=1)
         self.batch_size = batch_size
         self.current_idx = 0
 
