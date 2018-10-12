@@ -168,3 +168,7 @@ class Model(object):
         self.beam_size = tf.placeholder_with_default(1, (), name='beam_size')
         log_probs, self.selected = tf.nn.top_k(self.next_log_prob, self.beam_size)
         self.selected_p = -log_probs  # cost is the negative log likelihood
+
+
+
+

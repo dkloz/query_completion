@@ -5,7 +5,7 @@ import cPickle as pickle
 import time
 import numpy as np
 import sys
-import simplejson as json
+import json
 import os
 # import unicodecsv as csv
 import stat
